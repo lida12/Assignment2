@@ -1,0 +1,264 @@
+// Bad Code
+#include<iostream>
+
+class matrix
+{
+    
+    public:
+    int a[3][3];
+    
+    matrix()//default constructor
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                a[i][j]=0;
+            }
+        }
+    }
+    void set()// to set matrix elements
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                cout<<"\n Enter "<<i<<","<<j<<" element=";
+                cin>>a[i][j];
+            }
+        }
+    }
+    
+   void populate()
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+           
+               a[i][j]=1;
+            }
+        }
+    }
+
+
+
+    void show()// to show matrix elements
+    {
+        cout<<"\n Matrix is=\n";
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                
+                cout<<a[i][j]<<",";
+            }
+            cout<<"\n";
+        }
+    }
+    /*
+    binary * operator will require one more arg, since it is a binary operator
+    one arg is the object itself that will call it, other will be passed as arg(in this case x). also this will return a matrix object
+    */
+    matrix operator*(matrix x)// overloading * for multiplication
+    {
+        matrix c;// this will hold our result
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                c.a[i][j]=0;
+                for(int k=0;k<3;k++)
+                {
+                    c.a[i][j]=c.a[i][j]+a[i][k]*x.a[k][j];        
+                }
+            }
+        }
+        return(c);
+        
+    }
+};
+
+int main()
+{
+    matrix a,b,c;
+    a.set();
+    b.set();
+    c=a*b;
+    /*
+    note that compiler will break this statement as 
+    c=a.operator*(b);
+    this is how 2nd arg is passed.
+    and this is how object "a" acts as the calling object
+    */
+    
+    a.show();
+    b.show();
+    c.show();
+}
+
+
+//Good Code
+
+
+#include<iostream>
+
+using namespace std;
+
+class matrix
+{
+    
+    public:
+    int matrix1[3][3];
+    
+    matrix()
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                matrix1[i][j]=0;
+            }
+        }
+    }
+    void set_elements() //To read elements from user.
+    {
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                cout<<"\n Enter "<<i<<","<<j<<" element=";
+                cin>>matrix1[i][j];
+            }
+        }
+    }
+    void show_matrix()
+    {
+        cout<<"\n Matrix is=\n";
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                
+                cout<<matrix1[i][j]<<",";
+            }
+            cout<<"\n";
+        }
+    }
+   
+    matrix operator*(matrix parameter_matrix) //* operator overloaded. 
+    {
+        matrix resultant;
+        for(int i=0;i<3;i++)
+        {
+            for(int j=0;j<3;j++)
+            {
+                resultant.matrix1[i][j]=0;
+                for(int k=0;k<3;k++)
+                {
+                    resultant.matrix1[i][j]=resultant.matrix1[i][j]+matrix1[i][k]*parameter_matrix.matrix1[k][j];        
+                }
+            }
+        }
+        return(resultant);
+        
+    }
+};
+
+int main()
+{
+    matrix matrix1,matrix2,resultant;
+    matrix1.set_elements();
+    matrix2.set_elements();
+    resultant=matrix1*matrix2;    
+    matrix1.show_matrix();
+    matrix2.show_matrix();
+    resultant.show_matrix();
+}
+
+
+//bad code
+int main() {
+    float radius;
+    cout<<"Enter radius";
+    cin>>radius;
+    cout<<"Area of circle="<<areaOfCircle(radius);
+
+}
+
+float areaOfCircle(float radius)
+{
+    float pi=3.14;            //const value is not declared globally
+    return (pi*(radius*radius));
+
+}
+
+
+//good code
+
+#define PI 3.14159
+int main() {
+    float radius;
+    cout<<"Area of circle="<<areaOfCircle(radius);
+}
+float areaOfCircle(float radius)
+{
+    return (pi*(radius*radius));
+
+}
+
+//bad code
+int main() {
+    float radius;
+    cout<<"Enter radius";
+    cin>>radius;
+    cout<<"circle="<<areaOfCircle(radius);
+
+}
+
+float Circle(float radius)    // A function should only perform 1 thing
+{
+    int i;
+    float pi=3.14;    
+    cout<<"find 1.perimeter or 2.Area?";
+    cin>>i;
+    if(i==1) {
+        return(2*pi*radius);
+    }
+    if(i==2) {    
+    return (pi*(radius*radius));
+    }
+}
+
+
+//good code
+
+#define PI 3.14159
+int main() {
+    float radius;
+    int choice;
+    cout<<"Enter radius";
+    cin>>radius;
+    cout<<"1.Area. 2.Perimeter. Enter  choice: ";
+    cin>>choice;
+    switch(choice) {
+        case 1: cout<<"Area of circle="<<areaOfCircle(radius);
+    break;
+    case 2: cout<<"Perimeter of circle="<<perimeterOfCircle(radius);
+    break;
+    }
+}
+
+
+
+float areaOfCircle(float radius)
+{
+    return (pi*(radius*radius));
+
+}
+
+float perimeterOfCircle(float radius)
+{
+    return (2*pi*radius);
+
+}
